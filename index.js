@@ -319,7 +319,7 @@ client.connect(err => {
                    })
         
     app.get('/', (req, res) => {
-  res.send('Wellcome to yoga database...')
+  res.send('Wellcome to wellness database...')
     })
 
 })
