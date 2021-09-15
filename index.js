@@ -14,11 +14,13 @@ app.use(bodyParser.json({limit:'50mb'}))
 app.use(express.json());
 
 
+const uri=`mongodb+srv://${process.env.db_user}:${process.env.db_password}@cluster0.e7vcv.mongodb.net/${process.env.name}?retryWrites=true&w=majority`
 
-const uri = `mongodb+srv://${process.env.db_user}:${process.env.db_password}@cluster0.e7vcv.mongodb.net/${process.env.name}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
 
+  if(!err){
+    console.log("connected");
     const coursesCollection = client.db("yogaCenter").collection("courses");
     const teacherCollection = client.db("yogaCenter").collection("teacher");
     const orderCollection = client.db("yogaCenter").collection("order");
@@ -313,14 +315,24 @@ client.connect(err => {
                   console.log(email)
                  
                   adminCollection.find({email:email})
-                 .toArray((err, course) =>{
-                  res.send(course);
+                 .toArray((err, email) =>{
+                   if(email.length > 0){
+                      res.send(true)
+                   }
+                   else{
+                     res.send(false)
+                   }
                  })
                    })
         
     app.get('/', (req, res) => {
   res.send('Wellcome to wellness database...')
     })
+  }
+  else{
+    console.log(err)
+  }
+   
 
 })
-app.listen(process.env.PORT || 9999);
+app.listen(process.env.PORT || 9500);
