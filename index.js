@@ -225,7 +225,7 @@ client.connect(err => {
       const img = req.body.image;
       const courseName = req.body.courseName;
       const cardType = req.body.cardType ;
-      const status = "pending" ;
+      const status = "Pending" ;
       
 
       orderCollection.insertOne({userName,email,phone,courseName,img,cardType,status})
@@ -259,15 +259,21 @@ client.connect(err => {
                     })
 
     app.patch('/updateStatus/:id',(req,res) =>{  
+             
               const id = ObjectId(req.params.id);
               orderCollection.updateOne({_id:id},{
                 $set:{                 
-                   status : req.body.status                  
+                   status : req.body.status   
+                                
                 }
                 })
-                .then(result=> {
-                  console.log(result)
-                  res.send("updated")
+                .then(err,result=> {
+                  if(result.length>0){
+                    res.send(true)
+                  }
+                  else{
+                    res.send(false)
+                  }
                 })   
               })
 
