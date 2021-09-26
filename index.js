@@ -119,7 +119,7 @@ client.connect(err => {
           }
           })
           .then(result=> {
-            console.log(result)
+            
           })   
         })
 
@@ -191,7 +191,7 @@ client.connect(err => {
     teacherCollection.deleteOne({_id:id})
     .then(document=> {
       res.send("deleted")
-      console.log(document)
+      
     })
   
   })
@@ -257,6 +257,12 @@ client.connect(err => {
                    res.send(course);
                   })
                     })
+      app.delete('/get_all_order/:id', (req, res) =>{
+                      orderCollection.deleteOne()
+                      .toArray((err, course) =>{
+                       res.send(course);
+                      })
+                        })
 
     app.patch('/updateStatus/:id',(req,res) =>{  
              
@@ -281,13 +287,11 @@ client.connect(err => {
                 const name = req.body.name;
                 const email = req.body.email;
                 const image = req.body.image;
-                const review = req.body.review;
-               
-          
+                const review = req.body.review;              
                reviewCollection.insertOne({name,email,review,image})
                 .then(document=> {
                   res.send("added")
-                  console.log(document)
+                 
                 })          
               })
 
@@ -303,7 +307,7 @@ client.connect(err => {
                   reviewCollection.deleteOne({_id:id})
                   .then(document=> {
                     res.send("deleted")
-                    console.log(document)
+                    
                   })
                 
                 })
@@ -313,7 +317,7 @@ client.connect(err => {
                  adminCollection.insertOne({email})
                   .then(document=> {
                     res.send(message="added")
-                    console.log(document)
+                   
                   })          
                 })
     app.post('/Adminornot', (req, res) =>{
@@ -322,6 +326,7 @@ client.connect(err => {
                  
                   adminCollection.find({email:email})
                  .toArray((err, email) =>{
+                  
                    if(email.length > 0){
                       res.send(true)
                    }
